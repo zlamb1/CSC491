@@ -4,9 +4,9 @@ from datetime import datetime
 from alpaca.data import StockHistoricalDataClient
 from alpaca.data.requests import StockLatestQuoteRequest
 
-from csc491 import env
+import csc491
 
-env = env.load()
+env = csc491.env.load()
 
 api_key = env.get('ALPACA_API_KEY')
 if api_key is None:
