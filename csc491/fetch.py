@@ -4,7 +4,7 @@ from datetime import datetime
 from alpaca.data import StockHistoricalDataClient
 from alpaca.data.requests import StockLatestQuoteRequest
 
-stock_client = StockHistoricalDataClient("PKIBLY7RSD5EJRPAOESHRKWGJF", "GLxURZvXPZbks2T87z4xCEgZv3cViUSGgz67kuaNBt6C")
+stock_client = StockHistoricalDataClient("#", "#")
 
 def get_historical_data(stock_ticker):
     formatted_request = StockBarsRequest(
