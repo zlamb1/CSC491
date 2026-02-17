@@ -4,7 +4,19 @@ from datetime import datetime
 from alpaca.data import StockHistoricalDataClient
 from alpaca.data.requests import StockLatestQuoteRequest
 
-stock_client = StockHistoricalDataClient("#", "#")
+from csc491 import env
+
+env = env.load()
+
+api_key = env.get('ALPACA_API_KEY')
+if api_key is None:
+    raise RuntimeError('Supply ALPACA_API_KEY in .env')
+
+secret_key = env.get('ALPACA_SECRET_KEY')
+if secret_key is None:
+    raise RuntimeError('Supply ALPACA_SECRET_KEY in .env')
+
+stock_client = StockHistoricalDataClient(api_key, secret_key)
 
 def get_historical_data(stock_ticker):
     formatted_request = StockBarsRequest(
