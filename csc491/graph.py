@@ -17,7 +17,7 @@ def log_returns(dfs, cols):
   
   plt.show()
 
-def bar_count(dfs):
+def bar_count(dfs, titles=[]):
   fig, axs = plt.subplots(len(dfs), figsize=(15, 5))
   fig.suptitle('Bar Counts')
 
@@ -27,8 +27,11 @@ def bar_count(dfs):
   for i in range(len(dfs)):
     df = dfs[i]
     df = df.groupby(pd.Grouper(level='timestamp', freq='W')).size().rename('count').reset_index()
+    title = titles[i] if i < len(titles) else None  
     axs[i].bar(df['timestamp'], df['count'], width=5)
     axs[i].tick_params(axis='x', rotation=45)
+    if not title is None:
+      axs[i].set_title(title, color='green')
 
   plt.tight_layout()
   plt.show()
