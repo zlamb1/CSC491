@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import scipy as sp
 
 def log_returns(dfs, cols):
   fig, axs = plt.subplots(1, len(dfs), figsize=(15, 5))
@@ -35,3 +36,9 @@ def bar_count(dfs, titles=[]):
 
   plt.tight_layout()
   plt.show()
+
+def jarque_bera(df, col):
+  df['log_returns'] = np.log(df[col] / df[col].shift(1))
+  log_returns = df['log_returns'].dropna()
+  jb_stat, p_value = sp.stats.jarque_bera(log_returns)
+  return jb_stat, p_value
