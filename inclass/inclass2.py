@@ -8,3 +8,6 @@ print(f'time bars jb_stat : {jb_stat}, p_value : {p_value}')
 jb_stat, p_value = graph.jarque_bera(db, 'price')
 print(f'dollar bars jb_stat : {jb_stat}, p_value : {p_value}')
 graph.bar_count([df, db], titles=['Time Bars', 'Dollar Bars'])
+
+#df = fetch.scrape_stock_analysis()
+#print(df)
