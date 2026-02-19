@@ -5,28 +5,30 @@ from contextlib import closing
 def gen_dollar_bars(df):
     close_price = 0.00
     stocks = 0
-    closing_prices = df[['close', 'volume']]
-    rows = len(closing_prices)
-    bars_index = 1
+    timestamps = df.index.get_level_values(1)
+    closes = df['close'].values
+    volumes = df['volume'].values
+    rows = len(df)
+    bar = 1
     bars = []
     current_dollars = 0.00
-    index = 0
+    i = 0
 
-    threshold = 560000000 # Note: Placeholder until strategist number is determined.
+    threshold = 2500000000 # Note: Placeholder until strategist number is determined.
 
-    while index < rows:
-        price = closing_prices['close']
-        close_price = price.iloc[index]
-        volume = closing_prices['volume']
-        stocks = volume.iloc[index]
-        current_dollars += close_price * stocks
-        index += 1
-
+    while i < rows:
+        timestamp = timestamps[i]
+        close = closes[i]
+        volume = volumes[i]
+        current_dollars += close * volume
+        
         while current_dollars >= threshold:
-            multi_index = (bars_index, df.index[index][1])
-            bars.append((multi_index, close_price))
-            bars_index += 1
+            multi_index = (bar, timestamp)
+            bars.append((multi_index, close))
+            bar += 1
             current_dollars -= threshold
+
+        i += 1
 
     index, prices = zip(*bars)
     multi_index = pd.MultiIndex.from_tuples(index, names=['bar', 'timestamp'])
