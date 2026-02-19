@@ -20,7 +20,7 @@ def log_returns(dfs, cols):
 
 def bar_count(dfs, titles=[]):
   fig, axs = plt.subplots(len(dfs), figsize=(15, 5))
-  fig.suptitle('Bar Counts')
+  fig.suptitle('Bar Counts (Weekly)')
 
   if len(dfs) == 1:
     axs = [axs]
