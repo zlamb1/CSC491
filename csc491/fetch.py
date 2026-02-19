@@ -25,9 +25,6 @@ stock_client = StockHistoricalDataClient(api_key, secret_key)
 trade_client = TradingClient(api_key, secret_key)
 
 def get_historical_data(symbol_or_symbols):
-    if not isinstance(symbol_or_symbols, list):
-        symbol_or_symbols = [symbol_or_symbols]
-
     formatted_request = StockBarsRequest(
         symbol_or_symbols=symbol_or_symbols,
         start=datetime(2025, 4,18),
@@ -38,6 +35,9 @@ def get_historical_data(symbol_or_symbols):
     response = stock_client.get_stock_bars(formatted_request)
 
     df = response.df
+    if df.empty:
+        return None
+
     df.dropna(inplace=True)
     df = df[df.volume != 0]
 
@@ -45,10 +45,24 @@ def get_historical_data(symbol_or_symbols):
 
 def find_top_1000_stocks():
     assets = trade_client.get_all_assets(GetAssetsRequest(status="active", asset_class="us_equity"))
-    symbols_list = []
+    symbols = []
     for a in assets:
-        symbols_list.append(a.symbol)
-    df = get_historical_data(symbols_list[0:1000])
-    df['dv'] = df['close'] * df['volume']
+        symbols.append(a.symbol)
+    not_found = []
+    for i in range(len(symbols[0:1000])):
+        symbol = symbols[i]
+        df = csc491.cache.read_stock(symbol)
+        if df is None:
+            not_found.append(symbol)
+        else:
+            print(df)
+    if len(not_found) > 0:
+        df = get_historical_data(not_found)
+        for symbol in not_found:
+            if not symbol in df.index.get_level_values(0):
+                print(f'Warning: no stock ticker data found for {symbol}')
+                continue
+            csc491.cache.write_stock(symbol, df.loc[symbol])
+    # df['dv'] = df['close'] * df['volume']
     # Sort symbols by dollar volume and take top 1000.
-    return df, df.groupby('symbol')['dv'].sum().nlargest(1000)
+    # return df, df.groupby('symbol')['dv'].sum().nlargest(1000)
