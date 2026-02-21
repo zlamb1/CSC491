@@ -23,8 +23,3 @@ def read_stock(symbol):
     if not os.path.isfile(parquetpath):
         return None
     return pd.read_parquet(parquetpath)
-
-if __name__ == '__main__':
-    import csc491
-    df, filtered = csc491.fetch.find_top_1000_stocks()
-    cache_stocks(df, filtered)
