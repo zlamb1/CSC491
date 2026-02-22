@@ -1,7 +1,7 @@
-from csc491 import fetch, graph, transform
+from csc491 import api, graph, transform
 
 stock_ticker = input('Enter Stock Ticker: ')
-df = fetch.get_historical_data(stock_ticker)
+df = api.get_ticker_data(stock_ticker, start=api.datetime(2022, 1, 1))
 print('Transforming...')
 db = transform.gen_dollar_bars(df)
 print('Jarque-Bera...')

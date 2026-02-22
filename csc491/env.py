@@ -1,3 +1,6 @@
+from functools import cache
+
+@cache
 def load(filename='.env'):
     env = {}
 

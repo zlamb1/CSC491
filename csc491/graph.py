@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd
 import scipy as sp
 
-def log_returns(dfs, cols):
+def log_returns(symbol, dfs, cols):
   fig, axs = plt.subplots(1, len(dfs), figsize=(15, 5))
-  fig.suptitle('Log Returns Histogram')
+  fig.suptitle(f'{symbol} Log Returns Histogram')
 
   if len(dfs) == 1:
     axs = [axs]
