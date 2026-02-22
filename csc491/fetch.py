@@ -27,9 +27,9 @@ trade_client = TradingClient(api_key, secret_key)
 def get_historical_data(symbol_or_symbols):
     formatted_request = StockBarsRequest(
         symbol_or_symbols=symbol_or_symbols,
-        start=datetime(2025, 4,18),
-        end=datetime(2026,2,12),
-        timeframe=TimeFrame.Week
+        start=datetime(2022, 1, 1),
+        end=datetime.now(),
+        timeframe=TimeFrame.Month
     )
 
     response = stock_client.get_stock_bars(formatted_request)
@@ -48,21 +48,30 @@ def find_top_1000_stocks():
     symbols = []
     for a in assets:
         symbols.append(a.symbol)
-    not_found = []
-    for i in range(len(symbols[0:1000])):
-        symbol = symbols[i]
-        df = csc491.cache.read_stock(symbol)
-        if df is None:
-            not_found.append(symbol)
-        else:
-            print(df)
-    if len(not_found) > 0:
-        df = get_historical_data(not_found)
-        for symbol in not_found:
-            if not symbol in df.index.get_level_values(0):
-                print(f'Warning: no stock ticker data found for {symbol}')
-                continue
-            csc491.cache.write_stock(symbol, df.loc[symbol])
+    # not_found = []
+    # step = 1000
+
+    for symbol in symbols:
+        ticker = yf.Ticker(symbol)
+        market_cap = ticker.fast_info['market_cap']
+        print(f'{symbol}: {market_cap}')
+
+    #for symbol in symbols:
+    #    df = csc491.cache.read_stock(symbol)
+    #    if df is None:
+    #        not_found.append(symbol)
+#
+    #for i in range(0, len(not_found), step):
+    #    cur = not_found[i:i+1000]
+    #    df = get_historical_data(cur)
+    #    level_values = df.index.get_level_values(0)
+    #    for symbol in cur:
+    #        if not symbol in level_values:
+    #            #print(f'Warning: no stock ticker data found for {symbol}')
+    #            csc491.cache.write_stock(symbol, pd.DataFrame())
+    #            continue
+    #        csc491.cache.write_stock(symbol, df.loc[symbol])
+
     # df['dv'] = df['close'] * df['volume']
     # Sort symbols by dollar volume and take top 1000.
     # return df, df.groupby('symbol')['dv'].sum().nlargest(1000)
