@@ -29,7 +29,7 @@ def get_historical_data(symbol_or_symbols):
         symbol_or_symbols=symbol_or_symbols,
         start=datetime(2022, 1, 1),
         end=datetime.now(),
-        timeframe=TimeFrame.Month
+        timeframe=TimeFrame.Minute
     )
 
     response = stock_client.get_stock_bars(formatted_request)
