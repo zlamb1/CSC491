@@ -1,0 +1,27 @@
+import pyarrow as pa
+import pyarrow.parquet as pq
+import pandas as pd
+import csc491
+from db import top_1000 as top1000
+
+def make_files():
+  top1000 = top1000.get()
+  for symbol in top1000:
+    df = csc491.api.get_ticker_data(symbol)
+    db = csc491.transform.gen_dollar_bars(df)
+    table = pa.Table.from_pandas(db)
+    pq.write_table(table, f"{symbol}.parquet")
+
+def get_dollarbar_dataframe(symbol):
+  table = pq.read_table(f"{symbol}.parquet")
+  df = table.to_pandas()
+  cleaned_df = df.dropna()
+  #hdghdghdg
+  return cleaned_df
+
+def get_dollarbars_as_series(symbol):
+  table = pq.read_table(f"{symbol}.parquet")
+  df = table.to_pandas()
+  cleaned_df = df.dropna()
+  series = cleaned_df['price']
+  return series
