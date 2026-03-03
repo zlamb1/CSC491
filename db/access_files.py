@@ -3,6 +3,7 @@ import pyarrow.parquet as pq
 import pandas as pd
 import csc491
 from db import top_1000 as top1000
+# hello
 
 def make_files():
   top_stocks = top1000.get()
