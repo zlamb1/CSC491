@@ -30,5 +30,11 @@ def get_dollarbars_as_series(symbol):
   series = cleaned_df['close']
   return series
 
+def get_ffd_dataframe(symbol):
+  table = pq.read_table(f"{symbol}_ffd.parquet")
+  df = table.to_pandas()
+  cleaned_df = df.dropna()
+  return cleaned_df
+
 if __name__ == '__main__':
   make_files()
