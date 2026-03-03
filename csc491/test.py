@@ -1,12 +1,13 @@
-import transform
+import transform as tf
 import ffd
 import graph
 import yfinance as yf
 
 i =0
-testStrings = ["MSFT", "MU", "MCD", "DDOG", "UBER"]
+testStrings = ["MSFT", "MU", "MCD", "DDOG", "UBER", "T", "MOBX"]
 while i < len(testStrings):
-    df = yf.download(testStrings[i], start="2020-01-03", end="2023-01-01")
+    df = tf.gen_dollar_bars(testStrings)
     print("d value for " + testStrings[i])
-    ffd.get_ffd(df)
+    dValue = ffd.get_ffd(df)
+    print(dValue)
     i = i+1
