@@ -39,5 +39,5 @@ def gen_dollar_bars(df):
 
     index, prices = zip(*bars)
     multi_index = pd.MultiIndex.from_tuples(index, names=['bar', 'timestamp'])
-    dollar_bars = pd.DataFrame({ 'price':  prices }, index=multi_index)
+    dollar_bars = pd.DataFrame({ 'close':  prices }, index=multi_index)
     return dollar_bars

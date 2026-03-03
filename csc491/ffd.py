@@ -14,7 +14,7 @@ def get_ffd(df):
         diff_amt = diff_amt - .01
         thresh = 1e-05
         frac_df = frac_diff_ffd(df, diff_amt, thresh)
-        close = frac_df["Close"]
+        close = frac_df["close"]
         close = close.dropna()
         result = adfuller(close)
         p_value = result[1]
