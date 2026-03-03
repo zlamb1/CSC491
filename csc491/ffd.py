@@ -20,11 +20,3 @@ def get_ffd(df):
         p_value = result[1]
 
     print(diff_amt)
-
-i =0 
-testStrings = ["MSFT", "MU", "MCD", "DDOG", "UBER"]
-while i < len(testStrings):
-    df = yf.download(testStrings[i], start="2020-01-03", end="2023-01-01")
-    print("d value for " + testStrings[i])
-    get_ffd(df)
-    i = i+1
