@@ -11,20 +11,22 @@ def make_files():
     df = csc491.api.get_ticker_data(symbol)
     db = csc491.transform.gen_dollar_bars(df)
     db2 = csc491.ffd.get_ffd(df)
-    table = pa.Table.from_pandas(db)
-    table2 = pa.Table.from_pandas(db2)
-    pq.write_table(table, f"{symbol}.parquet")
-    pq.write_table(table2, f"{symbol}_ffd.parquet")
+    table1 = pa.Table.from_pandas(df)
+    table2 = pa.Table.from_pandas(db)
+    table3 = pa.Table.from_pandas(db2)
+    pq.write_table(table1, f"{symbol}.parquet")
+    pq.write_table(table2, f"{symbol}_db.parquet")
+    pq.write_table(table3, f"{symbol}_ffd.parquet")
 
 def get_dollarbar_dataframe(symbol):
-  table = pq.read_table(f"{symbol}.parquet")
+  table = pq.read_table(f"{symbol}_db.parquet")
   df = table.to_pandas()
   cleaned_df = df.dropna()
   #hdghdghdg
   return cleaned_df
 
 def get_dollarbars_as_series(symbol):
-  table = pq.read_table(f"{symbol}.parquet")
+  table = pq.read_table(f"{symbol}_db.parquet")
   df = table.to_pandas()
   cleaned_df = df.dropna()
   series = cleaned_df['close']
@@ -32,6 +34,12 @@ def get_dollarbars_as_series(symbol):
 
 def get_ffd_dataframe(symbol):
   table = pq.read_table(f"{symbol}_ffd.parquet")
+  df = table.to_pandas()
+  cleaned_df = df.dropna()
+  return cleaned_df
+
+def get_raw_dataframe(symbol):
+  table = pq.read_table(f"{symbol}.parquet")
   df = table.to_pandas()
   cleaned_df = df.dropna()
   return cleaned_df
