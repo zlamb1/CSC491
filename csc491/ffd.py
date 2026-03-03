@@ -3,8 +3,9 @@ import pandas as pd
 import numpy as np
 from statsmodels.tsa.stattools import adfuller 
 from mlfinpy.util.frac_diff import frac_diff_ffd, plot_min_ffd
+import json
 
-df = yf.download("AAPL", start="2020-01-03", end="2023-01-01")
+
 
 def get_ffd(df):
     p_value = 0
@@ -20,4 +21,10 @@ def get_ffd(df):
 
     print(diff_amt)
 
-get_ffd(df)
+i =0 
+testStrings = ["MSFT", "MU", "MCD", "DDOG", "UBER"]
+while i < len(testStrings):
+    df = yf.download(testStrings[i], start="2020-01-03", end="2023-01-01")
+    print("d value for " + testStrings[i])
+    get_ffd(df)
+    i = i+1
