@@ -1,11 +1,8 @@
-import yfinance as yf
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.stattools import adfuller 
 from mlfinpy.util.frac_diff import frac_diff_ffd, plot_min_ffd
 import json
-
-
 
 def get_ffd(df):
     p_value = 0
