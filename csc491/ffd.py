@@ -21,6 +21,9 @@ def get(df, target=.05, thresh=1e-05, max_attempts=10):
     while attempts < max_attempts:
         frac_df = frac_diff_ffd(df, mid, thresh)
         close = frac_df['close'].dropna()
+        # adfuller can't process constant series; skip if we don't have enough data
+        if len(close) == 1:
+            continue
         p_value = adf.get(close)['p_value']
 
         if p_value <= target:

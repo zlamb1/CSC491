@@ -89,7 +89,7 @@ def make_db(log=False):
   f = lambda symbol : transform.gen_dollar_bars(get(symbol, DataType.Raw))
   _make(f, DataType.DollarBars, log=log)
 
-def make_ffd(log=False, thread_count=os.cpu_count()//2):
+def make_ffd(log=False, thread_count=1):
   f = lambda symbol : ffd.get(get(symbol, DataType.DollarBars))['df']
   _make(f, DataType.FFD, log=log, thread_count=thread_count)
 
