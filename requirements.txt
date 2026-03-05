@@ -1,1 +1,9 @@
-numpy pandas pyarrow pytz alpaca-py matplotlib yahooquery statsmodels scipy mlfinpy
+alpaca-py
+matplotlib
+mlfinpy
+numpy
+pandas
+pyarrow
+scipy
+statsmodels
+yahooquery

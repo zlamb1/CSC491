@@ -3,7 +3,7 @@ import pandas as pd
 
 from statsmodels.tsa.stattools import adfuller
 
-def adf(series):
+def get(series):
     _adf = adfuller(series)
     return {
         'stat': _adf[0],

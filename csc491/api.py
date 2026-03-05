@@ -45,7 +45,7 @@ def get_ticker_symbols():
     assets = trade_client.get_all_assets(GetAssetsRequest(status="active", asset_class="us_equity"))
     return [asset.symbol for asset in assets]
 
-def get_ticker_data(symbol_or_symbols, start=None, end=None, timeframe=TimeFrame.Minute):     
+def get_ticker_data(symbol_or_symbols, start=None, end=None, timeframe=TimeFrame.Minute):
     if start is None:
         start = datetime.now()
         start = start.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)

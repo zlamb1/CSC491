@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 from contextlib import closing
@@ -6,7 +7,7 @@ def get_thresholds(df, timestamps, bars_per_day=50, window=30):
     ddv = df['close'] * df['volume']
     ddv = ddv.groupby(pd.Grouper(level=1, freq='D')).sum()
     # Calculate the rolling daily dollar volume average and backfill.
-    raddv = ddv.shift(1).rolling(window=window).mean().bfill()
+    raddv = ddv.shift(1).rolling(window=window).mean().replace(0, np.nan).bfill()
     return (timestamps.normalize().map(raddv) / bars_per_day).values
 
 def gen_dollar_bars(df):
@@ -28,16 +29,19 @@ def gen_dollar_bars(df):
         close = closes[i]
         volume = volumes[i]
         current_dollars += close * volume
-        
-        while current_dollars >= thresholds[i]:
+        threshold = thresholds[i]
+
+        progress = (i/rows)*100
+
+        while current_dollars >= threshold:
             multi_index = (bar, timestamp)
             bars.append((multi_index, close))
             bar += 1
-            current_dollars -= thresholds[i]
+            current_dollars -= threshold
 
         i += 1
 
-    index, prices = zip(*bars)
+    index, closes = zip(*bars)
     multi_index = pd.MultiIndex.from_tuples(index, names=['bar', 'timestamp'])
-    dollar_bars = pd.DataFrame({ 'close':  prices }, index=multi_index)
+    dollar_bars = pd.DataFrame({ 'close':  closes }, index=multi_index)
     return dollar_bars
